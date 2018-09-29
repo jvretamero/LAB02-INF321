@@ -1,4 +1,4 @@
-package br.unicamp.bookstore.endereco;
+package br.unicamp.ecommerce.endereco;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -14,11 +14,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
+import br.unicamp.ecommerce.Configuracao;
+import br.unicamp.ecommerce.model.Endereco;
+import br.unicamp.ecommerce.service.BuscaEnderecoService;
+
 import com.github.tomakehurst.wiremock.WireMockServer;
 
-import br.unicamp.bookstore.Configuracao;
-import br.unicamp.bookstore.model.Endereco;
-import br.unicamp.bookstore.service.BuscaEnderecoService;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.pt.Dado;

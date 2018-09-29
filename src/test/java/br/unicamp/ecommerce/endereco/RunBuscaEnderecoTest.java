@@ -1,4 +1,4 @@
-package br.unicamp.bookstore.endereco;
+package br.unicamp.ecommerce.endereco;
 
 import org.junit.runner.RunWith;
 

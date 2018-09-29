@@ -1,4 +1,4 @@
-package br.unicamp.bookstore.model;
+package br.unicamp.ecommerce.model;
 
 import javax.xml.bind.annotation.XmlElement;
 

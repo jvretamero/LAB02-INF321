@@ -1,4 +1,4 @@
-package br.unicamp.bookstore.model;
+package br.unicamp.ecommerce.model;
 
 public enum TipoEntregaEnum {
 	PACVAREJO("41106"),

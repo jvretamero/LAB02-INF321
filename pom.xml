@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>br.unicamp.inf321</groupId>
-	<artifactId>bookstore-correios</artifactId>
+	<artifactId>ecommerce-correios</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<dependencies>

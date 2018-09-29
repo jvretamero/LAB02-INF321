@@ -1,7 +1,7 @@
-package br.unicamp.bookstore.service;
+package br.unicamp.ecommerce.service;
 
-import br.unicamp.bookstore.Configuracao;
-import br.unicamp.bookstore.model.Endereco;
+import br.unicamp.ecommerce.Configuracao;
+import br.unicamp.ecommerce.model.Endereco;
 
 public class BuscaEnderecoService {
 

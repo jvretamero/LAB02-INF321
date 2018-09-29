@@ -1,4 +1,4 @@
-package br.unicamp.bookstore;
+package br.unicamp.ecommerce;
 
 // TODO refatorar para ler de um arquivo de configuração externo (properties ou yml)
 public class Configuracao {

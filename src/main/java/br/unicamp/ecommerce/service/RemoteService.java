@@ -1,4 +1,4 @@
-package br.unicamp.bookstore.service;
+package br.unicamp.ecommerce.service;
 
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
