@@ -8,7 +8,7 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(
         plugin = { "pretty", "html:target/cucumber" },
-        glue = "br.unicamp.bookstore.endereco",
+        glue = "br.unicamp.ecommerce.endereco",
         features = "classpath:features/BuscaEndereco.feature"
 )
 public class RunBuscaEnderecoTest {

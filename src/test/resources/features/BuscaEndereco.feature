@@ -1,6 +1,6 @@
 # language: pt
 Funcionalidade: Buscar Endereço
-  Como um usuário do sistema Bookstore
+  Como um usuário do sistema Ecommerce
   Desejo consultar um endereço a partir do CEP
   Para que eu possa usar o endereço para fazer um pedido
 
