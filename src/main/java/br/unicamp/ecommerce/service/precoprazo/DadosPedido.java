@@ -1,5 +1,8 @@
 package br.unicamp.ecommerce.service.precoprazo;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "CalcPrecoPrazo")
 public class DadosPedido {
 
     public String cep;
