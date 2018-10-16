@@ -1,15 +1,16 @@
 # language: pt
 Funcionalidade: Cálculo de preço e prazo
 
+    Contexto:
+        Dado eu vou calcular o preço e prazo do meu pedido
+
     Cenário: Consultar preço e prazo com dados válidos
-        Dado vou calcular o preço e prazo do meu pedido
         Quando eu informo meu CEP para cálculo
         Então o preço e prazo devem ser:
             | Preço | Prazo |
             | 100   | 2     |
 
     Cenário: Consultar preço e prazo com dados inválidos
-        Dado vou calcular o preço e prazo do meu pedido
         Quando eu informo meu CEP para cálculo
         Então devo receber a mensagem:
         """
@@ -17,7 +18,7 @@ Funcionalidade: Cálculo de preço e prazo
         """
 
      Cenário: Indisponibilidade no serviço
-        Dado vou calcular o preço e prazo do meu pedido
+        E o serviço está indisponível
         Quando eu informo meu CEP para cálculo
         Então devo receber a mensagem:
         """

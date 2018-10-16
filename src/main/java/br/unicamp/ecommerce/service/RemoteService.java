@@ -1,5 +1,6 @@
 package br.unicamp.ecommerce.service;
 
+import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
@@ -8,6 +9,7 @@ import java.net.URLConnection;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,81 +21,105 @@ import org.xml.sax.SAXException;
 
 public class RemoteService {
 
-  private static final int TIMEOUT = 5000;
+    private static final int TIMEOUT = 5000;
 
-public <T> T getAndParseXml(String endpointUrl, Class<T> xmlClass) throws Exception {
-    Document document = getAndParseXml(endpointUrl);
-    try {
-      Element root = document.getDocumentElement();
+    private <T> String marshal(T object, Class<T> objClass) {
+        try {
+            ByteArrayOutputStream baOut = new ByteArrayOutputStream();
 
-      JAXBContext context = JAXBContext.newInstance(xmlClass);
-      Unmarshaller unmarshaller = context.createUnmarshaller();
-      JAXBElement<T> loader = unmarshaller.unmarshal(root, xmlClass);
-      return loader.getValue();
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
+            JAXBContext context = JAXBContext.newInstance(objClass);
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.marshal(object, baOut);
+            return baOut.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-  }
 
-  public Document getAndParseXml(String endpointUrl) throws Exception {
-    URLConnection connection = openConnection(endpointUrl);
-    return parseResponse(connection);
-  }
+    private <T> T unmarshal(Document document, Class<T> xmlClass) {
+        try {
+            Element root = document.getDocumentElement();
 
-  public Document postAndParseXml(String endpointUrl, String body) throws Exception {
-    URLConnection connection = openConnection(endpointUrl, body);
-    return parseResponse(connection);
-  }
-
-  private Document parseResponse(URLConnection connection) throws Exception {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    try {
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      if(((HttpURLConnection) connection).getResponseCode() == 400) {
-    	throw new Exception("O CEP informado é invalido");  
-      }
-      return builder.parse(connection.getInputStream());
-    } catch (ParserConfigurationException | SAXException e) {
-      throw new Exception(e);
-    } catch (SocketTimeoutException e) {
-      throw new Exception("Serviço indisponivel");
+            JAXBContext context = JAXBContext.newInstance(xmlClass);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            JAXBElement<T> loader = unmarshaller.unmarshal(root, xmlClass);
+            return loader.getValue();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-  }
 
-  private URLConnection openConnection(String endpointUrl)
-		  throws Exception {
-    try {
-      URL url = new URL(endpointUrl);
-      URLConnection connection = url.openConnection();
-      connection.setUseCaches(false);
-      connection.setAllowUserInteraction(false);
-      connection.setConnectTimeout(TIMEOUT);
-      connection.setReadTimeout(TIMEOUT);
-      return connection;
-    } catch (Exception e) {
-      throw new Exception("Serviço indisponivel");
+    public <T> T getAndParseXml(String endpointUrl, Class<T> xmlClass) throws Exception {
+        Document document = getAndParseXml(endpointUrl);
+        return unmarshal(document, xmlClass);
     }
-  }
 
-  private URLConnection openConnection(String endpointUrl, String body) throws Exception {
-    try {
-      URL url = new URL(endpointUrl);
-      URLConnection connection = url.openConnection();
-      connection.setConnectTimeout(TIMEOUT);
-      connection.setReadTimeout(TIMEOUT);
-      connection.setDoOutput(true);
-      connection.setUseCaches(false);
-      connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-      connection.setAllowUserInteraction(false);
-
-      PrintStream outStream = new PrintStream(connection.getOutputStream());
-      outStream.println(body);
-      outStream.close();
-      return connection;
-    } catch (Exception e) {
-      throw new Exception("Serviço indisponivel");
+    public Document getAndParseXml(String endpointUrl) throws Exception {
+        URLConnection connection = openConnection(endpointUrl);
+        return parseResponse(connection);
     }
-  }
+
+    public Document postAndParseXml(String endpointUrl, String body) throws Exception {
+        URLConnection connection = openConnection(endpointUrl, body);
+        return parseResponse(connection);
+    }
+
+    public <T, U> T postAndParseXml(String endpointUrl, Class<T> returnClass, U body, Class<U> bodyClass) throws Exception {
+        String bodyStr = marshal(body, bodyClass);
+        Document document = postAndParseXml(endpointUrl, bodyStr);
+        return unmarshal(document, returnClass);
+    }
+
+    private Document parseResponse(URLConnection connection) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            if (((HttpURLConnection) connection).getResponseCode() == 400) {
+                throw new Exception("O CEP informado é invalido");
+            }
+            return builder.parse(connection.getInputStream());
+        } catch (ParserConfigurationException | SAXException e) {
+            throw new Exception(e);
+        } catch (SocketTimeoutException e) {
+            throw new Exception("Serviço indisponivel");
+        }
+    }
+
+    private URLConnection openConnection(String endpointUrl)
+            throws Exception {
+        try {
+            URL url = new URL(endpointUrl);
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(false);
+            connection.setAllowUserInteraction(false);
+            connection.setConnectTimeout(TIMEOUT);
+            connection.setReadTimeout(TIMEOUT);
+            return connection;
+        } catch (Exception e) {
+            throw new Exception("Serviço indisponivel");
+        }
+    }
+
+    private URLConnection openConnection(String endpointUrl, String body) throws Exception {
+        try {
+            URL url = new URL(endpointUrl);
+            URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(TIMEOUT);
+            connection.setReadTimeout(TIMEOUT);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            connection.setAllowUserInteraction(false);
+
+            PrintStream outStream = new PrintStream(connection.getOutputStream());
+            outStream.println(body);
+            outStream.close();
+            return connection;
+        } catch (Exception e) {
+            throw new Exception("Serviço indisponivel");
+        }
+    }
 
 }
