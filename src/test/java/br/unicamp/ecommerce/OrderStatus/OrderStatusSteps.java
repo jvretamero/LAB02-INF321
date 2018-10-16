@@ -29,7 +29,6 @@ public class OrderStatusSteps {
 
     @Given("^I have a Encomenda (\\d+)$")
     public void i_have_a_Encomenda(int arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
         encomenda = encomendaDAO.getEncomendaById(arg1);
     }
 
