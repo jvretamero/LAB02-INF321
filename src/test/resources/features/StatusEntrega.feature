@@ -1,11 +1,12 @@
-Feature: OrderStatus
-  As a user
-  I want to check the delivery status from my orders
-  So I can view the order details
+# language: pt
+Funcionalidade: OrderStatus
+    Como usuário
+    Eu quero consultar o status de entrega dos meus pedidos
+    Para que eu saiba quando será entregue
 
-  Scenario: Check order status
-    Given I have a Encomenda 2
-    When I choose to check Encomenda 3 StatusEncomenda
-    Then show the details screen
+    Cenário: Consultar status da encomenda
+        Dado eu tenho um código de rastreamento
+        Quando consulto o status da entrega
+        Então devo receber o evento dos Correios
     
   
